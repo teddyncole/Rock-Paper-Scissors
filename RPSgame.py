@@ -19,6 +19,12 @@ class Player:
         pass
 
 
+# class where player always plays rock
+class RockPlayer(Player):
+    def __init__(self) -> None:
+        super().__init__()
+
+
 # class where player will play a random move
 class RandomPlayer(Player):
     def move(self):
@@ -128,5 +134,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), ReflectPlayer())
-    game.play_3round()
+    game = Game(RockPlayer(), HumanPlayer())
+    game.play_1round()
