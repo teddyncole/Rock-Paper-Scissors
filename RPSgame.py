@@ -19,21 +19,25 @@ class Player:
         pass
 
 
+# class where player will play a random move
 class RandomPlayer(Player):
-    def randomMove(self):
+    def move(self):
         return random.choice(moves)
-        
 
+
+# class to allow actual player to input choices
 class HumanPlayer(Player):
     def move(self):
-        while True:
+        for round in iter(int, 1):
             humanMove = input("Choose Rock, Paper, or Scissors ").lower()
             if humanMove in moves:
-               return humanMove
+                return humanMove
             else:
                 print("Not a valid answer, choose again.")
-                continue
 
+
+# class where the player will play whatever previous choice of other
+# players move was
 class ReflectPlayer(Player):
     def __init__(self):
         self.beforeChoice = 'none'
@@ -49,6 +53,7 @@ class ReflectPlayer(Player):
         self.beforeChoice = their_move
 
 
+# class where player always plays the next move in the list of options
 class CyclePlayer(Player):
     def __init__(self):
         self.changeNumber = random.randint(0, 2)
@@ -61,6 +66,7 @@ class CyclePlayer(Player):
         return moves[self.changeNumber]
 
 
+# defining what choices beat other choices
 def beats(one, two):
     return ((one == 'rock' and two == 'scissors') or
             (one == 'scissors' and two == 'paper') or
@@ -74,6 +80,7 @@ class Game:
         self.p1score = 0
         self.p2score = 0
 
+# function that stores what the players have entered
     def play_round(self):
         move1 = self.p1.move()
         move2 = self.p2.move()
@@ -89,10 +96,12 @@ class Game:
             self.p2score += 1
         else:
             print("The Players have tied.")
+        print(f"Player 1 score: {self.p1score} Player 2 score: {self.p2score}")
 
-    def play_game(self):
+# function to play multiple rounds
+    def play_3round(self):
         print("Game start!")
-        for round in range(3):
+        for round in range(1, 4):
             print(f"Round {round}:")
             self.play_round()
         if self.p1score > self.p2score:
@@ -104,7 +113,20 @@ class Game:
 
         print("Game over.")
 
+# function to play 1 round
+    def play_1round(self):
+        print("Game start!")
+        self.play_round()
+        if self.p1score > self.p2score:
+            print("Player 1 has won Rock, Paper, Scissors!")
+        elif self.p2score > self.p1score:
+            print("Player 2 has won Rock, Paper, Scissors!")
+        else:
+            print("The Players have tied.")
+
+        print("Game over.")
+
 
 if __name__ == '__main__':
-    game = Game(HumanPlayer(), RandomPlayer())
-    game.play_game()
+    game = Game(HumanPlayer(), ReflectPlayer())
+    game.play_3round()
